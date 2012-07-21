@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Diary | がむのメモ]]></title>
   <link href="http://gam0022.github.com/blog/categories/diary/atom.xml" rel="self"/>
   <link href="http://gam0022.github.com/"/>
-  <updated>2012-07-21T19:20:27+09:00</updated>
+  <updated>2012-07-21T19:32:35+09:00</updated>
   <id>http://gam0022.github.com/</id>
   <author>
     <name><![CDATA[がむ(@gam0022)]]></name>
@@ -22,14 +22,23 @@
 
 <p>私は情報系の大学生をしている「がむ」というものです。</p>
 
-<p>かつては<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
+<p>高校生までは、こっちのほうで<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、
+更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
 
 <p>技術ネタをどこかにアウトプットしたいというのはあるので、そのまま旧ブログに書いてもよいのですが、
 せっかくなので、少しギークっぽい方法でブログを作ってみたくなりました。</p>
 
 <p>最近はRuby弄りに夢中なので、Rails製のCMSの<a href="http://octopress.org/">Octpress</a>というものがあると知り、試してみることにしました。</p>
 
-<p>Octpressが気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。</p>
+<p>大学で宗教戦争に巻き込まれた結果、Vimを愛用していて、
+今ではプログラミングをするならVSかVimを使っているのですが、
+ターミナルとVimからブログの更新が完結するというのは新鮮です。</p>
+
+<p>Markdown形式で記事を書けるのも嬉しいです。</p>
+
+<p>Rubyで書いてあるので実装を追いやすいですし、使っている人が少ないという未開拓な感じがいいですね。</p>
+
+<p>Octpressを気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。</p>
 ]]></content>
   </entry>
   
