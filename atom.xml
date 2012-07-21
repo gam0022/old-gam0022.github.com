@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[がむのメモ]]></title>
+  <link href="http://gam0022.github.com/atom.xml" rel="self"/>
+  <link href="http://gam0022.github.com/"/>
+  <updated>2012-07-21T17:50:22+09:00</updated>
+  <id>http://gam0022.github.com/</id>
+  <author>
+    <name><![CDATA[がむ(@gam0022)]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octpressはじめました!]]></title>
+    <link href="http://gam0022.github.com/blog/2012/07/21/hello/"/>
+    <updated>2012-07-21T17:39:00+09:00</updated>
+    <id>http://gam0022.github.com/blog/2012/07/21/hello</id>
+    <content type="html"><![CDATA[<p>どうもこんにちは！</p>
+
+<p>私は情報系の大学生をしているがむというものです。</p>
+
+<p>かつては<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
+
+<p>最近はRuby弄りに夢中なので、Rails製のCMSというOctpressというものがあると知り、試してみることにしました。</p>
+
+<p>Octpressが気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。</p>
+]]></content>
+  </entry>
+  
+</feed>
