@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octpressはじめました! - がむのメモ</title>
+  <title>Octpressのテーマをカスタマイズする - がむのメモ</title>
   <meta name="author" content="がむ(@gam0022)">
 
   
-  <meta name="description" content="どうもこんにちは！ 私は情報系の大学生をしている「がむ」というものです。 高校生までは、こっちのほうでブログを書いていたのですが、
-更新が面倒になってしまい、放置して1年以上経ってしまいました… 技術ネタをどこかにアウトプットしたいというの欲求はあるので、旧ブログに書いても良かったのですが &hellip;">
+  <meta name="description" content="Ocpressの標準のデザインは悪くはないのですが、個人的にはいまいち物足りなさを感じたので、テーマを変更しました。 テーマですが、このページなどから、
+かっこいいのを見つけてくればいいと思います。 とりあえず私は、bootstrap-themeを入れてみることにしました。
+導入はとても簡単です &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://gam0022.github.com/blog/2012/07/21/hello">
+  <link rel="canonical" href="http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/bootstrap/bootstrap.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/bootstrap/responsive.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -96,7 +97,7 @@
   
   <header class="page-header">
     
-      <h1 class="entry-title">Octpressはじめました!</h1>
+      <h1 class="entry-title">Octpressのテーマをカスタマイズする</h1>
     
     
       <p class="meta">
@@ -112,7 +113,7 @@
   
 
 
-<time datetime="2012-07-21T17:39:00+09:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
+<time datetime="2012-07-21T23:51:00+09:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -121,23 +122,39 @@
   </header>
 
 
-<div class="entry-content"><p>どうもこんにちは！</p>
+<div class="entry-content"><p>Ocpressの標準のデザインは悪くはないのですが、個人的にはいまいち物足りなさを感じたので、テーマを変更しました。</p>
 
-<p>私は情報系の大学生をしている「がむ」というものです。</p>
+<p>テーマですが、<a href="https://github.com/imathis/octopress/wiki/List-Of-Octopress-Themes">このページ</a>などから、
+かっこいいのを見つけてくればいいと思います。</p>
 
-<p>高校生までは、こっちのほうで<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、
-更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
+<p>とりあえず私は、<a href="https://github.com/bkutil/bootstrap-theme">bootstrap-theme</a>を入れてみることにしました。
+導入はとても簡単です。</p>
 
-<p>技術ネタをどこかにアウトプットしたいというの欲求はあるので、旧ブログに書いても良かったのですが
-せっかくなので、少しギークっぽい方法でブログを作ってみたくなりました。</p>
+<p>コード例を示すまでもないですが、Codeblockを試してみたいので、導入するまでのコードを貼り付けます。</p>
 
-<p>最近はRuby弄りに夢中なので、Rails製のCMSの<a href="http://octopress.org/">Octpress</a>というものがあると知り、試してみることにしました。</p>
+<p>(ちなみに、シェルのコマンドを貼り付けるときはlangをbashにすると良いみたいです。)</p>
 
-<p>ターミナル上からブログの更新が完結するというのは新鮮ですし、Markdown形式で記事を書けるのも嬉しいです。</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/git/octpress <span class="c">#octpressのディレクトリ</span>
+</span><span class='line'>git clone https://github.com/bkutil/bootstrap-theme.git .themes/bootstrap-theme
+</span><span class='line'>rake install<span class="o">[</span><span class="s2">&quot;bootstrap-theme&quot;</span><span class="o">]</span>
+</span><span class='line'>rake generate
+</span><span class='line'>rake deploy <span class="c">#公開</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>また、Rubyで書いてあるので実装を追いやすいですし、使っている人が少ないという未開拓な感じがいいですね。</p>
 
-<p>Octpressを気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。</p>
+<p>テーマを変えることで、一気にモダンな感じになりました!</p>
+
+<p>話題のBootstrapだけあって、こんなショボイブログも見てくれだけはいい感じに見えるような気がします。</p>
+
+<p>あとは、_config.ymlをちょっといじるだけで、facebookやGoogle+のボタンをつけたり、
+Disqus Commentsでコメントをできるようにできるので、簡単にモダンなブログを作ることが出来ました。</p>
+
+<p>Octpressすごい!</p>
 </div>
 
 
@@ -160,12 +177,12 @@
   
 
 
-<time datetime="2012-07-21T17:39:00+09:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
+<time datetime="2012-07-21T23:51:00+09:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/diary/'>Diary</a>, <a class='category' href='/blog/categories/octpress/'>Octpress</a>
+    <a class='category' href='/blog/categories/diary/'>Diary</a>, <a class='category' href='/blog/categories/octpress/'>Octpress</a>, <a class='category' href='/blog/categories/bootstrap/'>bootstrap</a>
   
 </span>
 
@@ -174,7 +191,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://gam0022.github.com/blog/2012/07/21/hello/" data-via="gam0022" data-counturl="http://gam0022.github.com/blog/2012/07/21/hello/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme/" data-via="gam0022" data-counturl="http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -194,11 +211,11 @@
     
     <ul class="pager">
       
-      <li><a href="/blog/archives">Blog Archives</a></li>
+      <li class="previous"><a class="basic-alignment left"
+        href="/blog/2012/07/21/hello/" title="Previous Post:
+        Octpressはじめました!">&laquo; Octpressはじめました!</a></li>
       
-      <li class="next"><a class="basic-alignment right" href="/blog/2012/07/21/use-bootstrap-theme/"
-        title="Next Post: Octpressのテーマをカスタマイズする">Octpressのテーマをカスタマイズする
-        &raquo;</a></li>
+      <li><a href="/blog/archives">Blog Archives</a></li>
       
     </ul>
   </footer>
@@ -281,8 +298,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://gam0022.github.com/blog/2012/07/21/hello/';
-        var disqus_url = 'http://gam0022.github.com/blog/2012/07/21/hello/';
+        var disqus_identifier = 'http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme/';
+        var disqus_url = 'http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme/';
         var disqus_script = 'embed.js';
       
     (function () {

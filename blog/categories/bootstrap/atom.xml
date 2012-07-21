@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Diary | がむのメモ]]></title>
-  <link href="http://gam0022.github.com/blog/categories/diary/atom.xml" rel="self"/>
+  <title><![CDATA[Category: bootstrap | がむのメモ]]></title>
+  <link href="http://gam0022.github.com/blog/categories/bootstrap/atom.xml" rel="self"/>
   <link href="http://gam0022.github.com/"/>
   <updated>2012-07-22T00:20:26+09:00</updated>
   <id>http://gam0022.github.com/</id>
@@ -50,31 +50,6 @@
 Disqus Commentsでコメントをできるようにできるので、簡単にモダンなブログを作ることが出来ました。</p>
 
 <p>Octpressすごい!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octpressはじめました!]]></title>
-    <link href="http://gam0022.github.com/blog/2012/07/21/hello/"/>
-    <updated>2012-07-21T17:39:00+09:00</updated>
-    <id>http://gam0022.github.com/blog/2012/07/21/hello</id>
-    <content type="html"><![CDATA[<p>どうもこんにちは！</p>
-
-<p>私は情報系の大学生をしている「がむ」というものです。</p>
-
-<p>高校生までは、こっちのほうで<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、
-更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
-
-<p>技術ネタをどこかにアウトプットしたいというの欲求はあるので、旧ブログに書いても良かったのですが
-せっかくなので、少しギークっぽい方法でブログを作ってみたくなりました。</p>
-
-<p>最近はRuby弄りに夢中なので、Rails製のCMSの<a href="http://octopress.org/">Octpress</a>というものがあると知り、試してみることにしました。</p>
-
-<p>ターミナル上からブログの更新が完結するというのは新鮮ですし、Markdown形式で記事を書けるのも嬉しいです。</p>
-
-<p>また、Rubyで書いてあるので実装を追いやすいですし、使っている人が少ないという未開拓な感じがいいですね。</p>
-
-<p>Octpressを気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。</p>
 ]]></content>
   </entry>
   
