@@ -3,11 +3,11 @@
 # ----------------------- #
 
 url: http://gam0022.github.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: がむのメモ
+subtitle: とある情報系の大学生の日記。
+author: がむ(@gam0022)
 simple_search: http://google.com/search
-description:
+description: とある情報系の大学生の日記。
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in

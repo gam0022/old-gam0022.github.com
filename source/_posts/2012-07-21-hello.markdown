@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Octpressはじめました!"
+date: 2012-07-21 17:39
+comments: true
+categories: 
+- Octpress
+- Diary
+---
+どうもこんにちは！
+
+私は情報系の大学生をしているがむというものです。
+
+かつては[ブログ](http://gmr.blog.shinobi.jp/)を書いていたのですが、更新が面倒になってしまい、放置して1年以上経ってしまいました…
+
+最近はRuby弄りに夢中なので、Rails製のCMSというOctpressというものがあると知り、試してみることにしました。
+
+Octpressが気に入ったら、このブログを私の技術的なメモとして活用していきたいなと思っています。
