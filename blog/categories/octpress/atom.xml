@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octpress | がむのメモ]]></title>
   <link href="http://gam0022.github.com/blog/categories/octpress/atom.xml" rel="self"/>
   <link href="http://gam0022.github.com/"/>
-  <updated>2012-07-21T23:19:09+09:00</updated>
+  <updated>2012-07-21T23:42:25+09:00</updated>
   <id>http://gam0022.github.com/</id>
   <author>
     <name><![CDATA[がむ(@gam0022)]]></name>
@@ -25,14 +25,14 @@
 <p>高校生までは、こっちのほうで<a href="http://gmr.blog.shinobi.jp/">ブログ</a>を書いていたのですが、
 更新が面倒になってしまい、放置して1年以上経ってしまいました…</p>
 
-<p>技術ネタをどこかにアウトプットしたいというのはあるので、そのまま旧ブログに書いてもよいのですが、
+<p>技術ネタをどこかにアウトプットしたいというの欲求はあるので、旧ブログに書いても良かったのですが
 せっかくなので、少しギークっぽい方法でブログを作ってみたくなりました。</p>
 
 <p>最近はRuby弄りに夢中なので、Rails製のCMSの<a href="http://octopress.org/">Octpress</a>というものがあると知り、試してみることにしました。</p>
 
 <p>大学で宗教戦争に巻き込まれた結果、Vimを愛用していて、
 今ではプログラミングをするならVSかVimを使っているのですが、
-ターミナルとVimからブログの更新が完結するというのは新鮮です。</p>
+ターミナル上からブログの更新が完結するというのは新鮮です。</p>
 
 <p>Markdown形式で記事を書けるのも嬉しいです。</p>
 
