@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rsyncを使ってOctpressをVPS上で公開する - がむのメモ</title>
+  <meta name="author" content="がむ(@gam0022)">
+
+  
+  <meta name="description" content="今回もOctpressに関する記事です。 先日、Octpressを使ってGithubPages上にブログを運営しましたが、
+気が変わってレンタルしているVPS上で運営したくなりました。 Octpressではrake &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/bootstrap/bootstrap.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/bootstrap/responsive.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/syntax/syntax.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    body {
+      padding-bottom: 40px;
+    }
+    h1 {
+      margin-bottom: 15px;
+    }
+    img {
+      max-width: 100%;
+    }
+    .sharing, .meta, .pager {
+      margin: 20px 0px 20px 0px;
+    }
+    .page-footer p {
+      text-align: center;
+    }
+  </style>
+  <script src="/javascripts/libs/jquery.js"></script>
+  <script src="/javascripts/libs/modernizr-2.0.js"></script>
+  <script src="/javascripts/libs/bootstrap.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="がむのメモ" type="application/atom+xml">
+  
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <a class="brand" href="/">がむのメモ</a>
+
+      <div class="nav-collapse">
+        <ul class="nav">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About me</a></li>
+</ul>
+
+
+        <ul class="nav pull-right" data-subscription="rss">
+          <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+          
+        </ul>
+
+        
+          <form class="pull-right navbar-search" action="http://google.com/search" method="get">
+            <fieldset role="search">
+              <input type="hidden" name="q" value="site:gam0022.com" />
+              <input class="search-query" type="text" name="q" results="0" placeholder="Search"/>
+            </fieldset>
+          </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</nav>
+  <div class="container">
+    <div class="row-fluid">
+      
+<article class="hentry span9" role="article">
+
+  
+  <header class="page-header">
+    
+      <h1 class="entry-title">Rsyncを使ってOctpressをVPS上で公開する</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T10:02:00+09:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今回もOctpressに関する記事です。</p>
+
+<p>先日、Octpressを使ってGithubPages上にブログを運営しましたが、
+気が変わってレンタルしているVPS上で運営したくなりました。</p>
+
+<p>Octpressでは<code>rake deploy</code>を叩くだけでRsyncを使い自分のサーバ上にコンテンツを同期するようにできます。</p>
+
+<p>今回はその方法を紹介したいと思います。</p>
+
+<p>Rsyncを使って同期するためには次の2つの作業をする必要があります。</p>
+
+<p>(もしかすると、Rakefileの設定だけでよいのかもしれませんが、未検証です。)</p>
+
+<ol>
+<li>公開鍵認証を使ってsshでログインできるようにする。</li>
+<li>サーバ側の<code>~/.ssh/authorized_keys</code>にローカル側の公開鍵を登録する。</li>
+</ol>
+
+
+<p>1.は最初から行なっている人が多いかもしれませんね。</p>
+
+<p>ここでは、作成済みのuserというユーザからserverというドメインのサーバに公開鍵でログインするようにする手順を紹介します。</p>
+
+<p>環境はServersMan@VPS(OS:Ubuntu, HDD:10GB,RAM:256MB)です。</p>
+
+<h2>サーバ側の設定</h2>
+
+<p>まず、VPSに普通にパスワード認証でsshをして作業します。</p>
+
+<h3>公開鍵の生成</h3>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ssh root@server
+</span><span class='line'>login user
+</span><span class='line'>ssh-keygen -t rsa <span class="c">#公開鍵を生成 save the keyは空白でOK、パスフレーズは任意のものを指定する</span>
+</span><span class='line'><span class="nb">cd</span> ~/.ssh/
+</span><span class='line'>mv id_rsa.pub authorized_keys <span class="c">#公開鍵はauthorized_keysにリネーム</span>
+</span><span class='line'>cat id_rsa <span class="c">#この内容は後でローカルに保存するので、テキストエディタなどに貼りつけておく</span>
+</span><span class='line'><span class="nb">exit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>sshの設定</h3>
+
+<p>vimなどで、サーバ側の<code>/etc/ssh/sshd_config</code>を編集します。
+間違った設定をすると最悪sshでログインできなるので注意しましょうw</p>
+
+<p>私の場合はこのような感じに<strong>一部を書き換えました。</strong>
+この記事を書いている私ですが、サーバの設定は初心者なので、あまり信用しないようにしましょうw
+あくまで参考程度で。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>AllowUsers user
+</span><span class='line'>RSAAuthentication yes 
+</span><span class='line'>PubkeyAuthentication yes 
+</span><span class='line'>AuthorizedKeysFile   %h/.ssh/authorized_keys</span></code></pre></td></tr></table></div></figure>
+
+
+<p>VPS上の設定が終わったら、sshdを再起動します。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/init.d/ssh restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ローカル側の設定</h2>
+
+<p>前に<code>cat id_rsa</code>で表示した内容を、ローカルの<code>~/.ssh/foo.key</code>(fooは任意)で保存します。
+sshの-iオプションで秘密鍵を指定してログインらしいです。じつはよくわかってませんw</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/.ssh
+</span><span class='line'>vim foo.key <span class="c">#サーバのid_rsaをコピペして保存</span>
+</span><span class='line'>chmod 600 foo.key <span class="c">#これしないと「WARNING: UNPROTECTED PRIVATE KEY FILE!」と出てログインできない</span>
+</span><span class='line'>ssh -i foo.key user@server <span class="c">#これでログインできれば成功</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>サーバ側の~/.ssh/authorized_keysにローカル側の公開鍵を登録する。</h3>
+
+<p>前の手順で、サーバにログインできたと思うので、
+ついでにサーバ側の<code>~/.ssh/authorized_keys</code>にローカルの公開鍵を追加します。</p>
+
+<h3>Octpressの設定</h3>
+
+<p>ここまで来れば、あとはOctpressの設定だけです。<code>Rakefile</code>を編集します。</p>
+
+<p>私の場合、GithubPages用にRakeFileを設定してしまったので、書き直します。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">## -- Rsync Deploy config -- ##</span>
+</span><span class='line'><span class="c1"># Be sure your public key is listed in your server&#39;s ~/.ssh/authorized_keys file</span>
+</span><span class='line'><span class="n">ssh_user</span>       <span class="o">=</span> <span class="s2">&quot;user@server&quot;</span>
+</span><span class='line'><span class="n">ssh_port</span>       <span class="o">=</span> <span class="s2">&quot;1234&quot;</span> <span class="c1">#普通は22ですが、セキュリティ上の理由で(</span>
+</span><span class='line'><span class="n">document_root</span>  <span class="o">=</span> <span class="s2">&quot;/var/www/html/&quot;</span> <span class="c1">#htmlの公開用のディレクトリを指定。ServersMan@VPSならこの設定でいいはず。</span>
+</span><span class='line'><span class="n">rsync_delete</span>   <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="c1">#deploy_default = &quot;push&quot;</span>
+</span><span class='line'><span class="n">deploy_default</span> <span class="o">=</span> <span class="s2">&quot;rsync&quot;</span> <span class="c1">#rsyncで同期します。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>たぶんこれで設定は終わりです。</p>
+
+<p><code>rake deploy</code>でファイルが同期できたら成功です。</p>
+
+<hr />
+
+<p>参考記事
+:<a href="http://octopress.org/docs/deploying/rsync/">Deploying With Rsync</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">がむ(@gam0022)</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-23T10:02:00+09:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octpress/'>Octpress</a>, <a class='category' href='/blog/categories/rsync/'>Rsync</a>, <a class='category' href='/blog/categories/serversman-vps/'>ServersMan@VPS</a>, <a class='category' href='/blog/categories/vps/'>VPS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/" data-via="gam0022" data-counturl="http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    
+    <section>
+      <h1>Comments</h1>
+      <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </section>
+    
+    <ul class="pager">
+      
+      <li class="previous"><a class="basic-alignment left"
+        href="/blog/2012/07/21/use-bootstrap-theme/" title="Previous Post:
+        Octpressのテーマをカスタマイズする">&laquo; Octpressのテーマをカスタマイズする</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+      <li class="next"><a class="basic-alignment right" href="/blog/2012/07/24/configure-the-css-with-bootstrap-theme/"
+        title="Next Post: Octpressでbootstrap-themeにしたとき、sass/custom/_styles.scssが反映されなくなった件について">Octpressでbootstrap-themeにしたとき、sass/custom/_styles.scssが反映されなくなった件について
+        &raquo;</a></li>
+      
+    </ul>
+  </footer>
+</article>
+
+<aside class="sidebar-nav span3">
+  
+    <section class="well">
+  <ul id="recent_posts" class="nav nav-list">
+    <li class="nav-header">Recent Posts</li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/24/configure-the-css-with-bootstrap-theme/">Octpressでbootstrap-themeにしたとき、sass/custom/_styles.scssが反映されなくなった件について</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/">Rsyncを使ってOctpressをVPS上で公開する</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/21/use-bootstrap-theme/">Octpressのテーマをカスタマイズする</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/21/hello/">Octpressはじめました!</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section class="well">
+  <ul id="gh_repos" class="nav">
+    <li class="nav-header">GitHub Repos</li>
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        github.showRepos({
+            user: 'gam0022',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/asides/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section class="well">
+  <ul id="tweets" class="nav">
+    <li class="nav-header">Latest Tweets</li>
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      getTwitterFeed("gam0022", 4, false);
+    });
+  </script>
+  <script src="/javascripts/asides/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/gam0022" class="twitter-follow-button" data-show-count="false">Follow @gam0022</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo" class="page-footer"><hr>
+<p>
+  Copyright &copy; 2012 - がむ(@gam0022) -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'gam0022-net';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/';
+        var disqus_url = 'http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

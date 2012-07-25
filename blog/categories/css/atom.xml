@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: bootstrap | がむのメモ]]></title>
-  <link href="http://gam0022.com/blog/categories/bootstrap/atom.xml" rel="self"/>
+  <title><![CDATA[Category: CSS | がむのメモ]]></title>
+  <link href="http://gam0022.com/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://gam0022.com/"/>
   <updated>2012-07-25T20:07:46+09:00</updated>
   <id>http://gam0022.com/</id>
@@ -159,46 +159,6 @@ Octpressに<a href="https://github.com/bkutil/bootstrap-theme">bootstrap-theme</
 <h5>h5</h5>
 
 <h6>h6</h6>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octpressのテーマをカスタマイズする]]></title>
-    <link href="http://gam0022.com/blog/2012/07/21/use-bootstrap-theme/"/>
-    <updated>2012-07-21T23:51:00+09:00</updated>
-    <id>http://gam0022.com/blog/2012/07/21/use-bootstrap-theme</id>
-    <content type="html"><![CDATA[<p>Ocpressの標準のデザインは悪くはないのですが、個人的にはいまいち物足りなさを感じたので、テーマを変更しました。</p>
-
-<p>テーマですが、<a href="https://github.com/imathis/octopress/wiki/List-Of-Octopress-Themes">このページ</a>などから、
-かっこいいのを見つけてくればいいと思います。</p>
-
-<p>とりあえず私は、<a href="https://github.com/bkutil/bootstrap-theme">bootstrap-theme</a>を入れてみることにしました。
-導入はとても簡単です。</p>
-
-<p>コード例を示すまでもないですが、Codeblockを試してみたいので、導入するまでのコードを貼り付けます。</p>
-
-<p>(ちなみに、シェルのコマンドを貼り付けるときはlangをbashにすると良いみたいです。)</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/git/octpress <span class="c">#octpressのディレクトリ</span>
-</span><span class='line'>git clone https://github.com/bkutil/bootstrap-theme.git .themes/bootstrap-theme
-</span><span class='line'>rake install<span class="o">[</span><span class="s2">&quot;bootstrap-theme&quot;</span><span class="o">]</span>
-</span><span class='line'>rake generate
-</span><span class='line'>rake deploy <span class="c">#公開</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>テーマを変えることで、一気にモダンな感じになりました!</p>
-
-<p>話題のBootstrapだけあって、こんなショボイブログも見てくれだけはいい感じに見えるような気がします。</p>
-
-<p>あとは、_config.ymlをちょっといじるだけで、facebookやGoogle+のボタンをつけたり、
-Disqus Commentsでコメントをできるようにできるので、簡単にモダンなブログを作ることが出来ました。</p>
-
-<p>Octpressすごい!</p>
 ]]></content>
   </entry>
   

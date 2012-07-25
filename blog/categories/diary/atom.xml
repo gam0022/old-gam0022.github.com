@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Diary | がむのメモ]]></title>
-  <link href="http://gam0022.github.com/blog/categories/diary/atom.xml" rel="self"/>
-  <link href="http://gam0022.github.com/"/>
-  <updated>2012-07-22T00:20:26+09:00</updated>
-  <id>http://gam0022.github.com/</id>
+  <link href="http://gam0022.com/blog/categories/diary/atom.xml" rel="self"/>
+  <link href="http://gam0022.com/"/>
+  <updated>2012-07-25T20:07:46+09:00</updated>
+  <id>http://gam0022.com/</id>
   <author>
     <name><![CDATA[がむ(@gam0022)]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Octpressのテーマをカスタマイズする]]></title>
-    <link href="http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme/"/>
+    <link href="http://gam0022.com/blog/2012/07/21/use-bootstrap-theme/"/>
     <updated>2012-07-21T23:51:00+09:00</updated>
-    <id>http://gam0022.github.com/blog/2012/07/21/use-bootstrap-theme</id>
+    <id>http://gam0022.com/blog/2012/07/21/use-bootstrap-theme</id>
     <content type="html"><![CDATA[<p>Ocpressの標準のデザインは悪くはないのですが、個人的にはいまいち物足りなさを感じたので、テーマを変更しました。</p>
 
 <p>テーマですが、<a href="https://github.com/imathis/octopress/wiki/List-Of-Octopress-Themes">このページ</a>などから、
@@ -55,9 +55,9 @@ Disqus Commentsでコメントをできるようにできるので、簡単に�
   
   <entry>
     <title type="html"><![CDATA[Octpressはじめました!]]></title>
-    <link href="http://gam0022.github.com/blog/2012/07/21/hello/"/>
+    <link href="http://gam0022.com/blog/2012/07/21/hello/"/>
     <updated>2012-07-21T17:39:00+09:00</updated>
-    <id>http://gam0022.github.com/blog/2012/07/21/hello</id>
+    <id>http://gam0022.com/blog/2012/07/21/hello</id>
     <content type="html"><![CDATA[<p>どうもこんにちは！</p>
 
 <p>私は情報系の大学生をしている「がむ」というものです。</p>

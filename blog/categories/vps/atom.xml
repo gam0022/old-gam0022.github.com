@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: VPS | がむのメモ]]></title>
+  <link href="http://gam0022.com/blog/categories/vps/atom.xml" rel="self"/>
+  <link href="http://gam0022.com/"/>
+  <updated>2012-07-25T20:07:46+09:00</updated>
+  <id>http://gam0022.com/</id>
+  <author>
+    <name><![CDATA[がむ(@gam0022)]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rsyncを使ってOctpressをVPS上で公開する]]></title>
+    <link href="http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync/"/>
+    <updated>2012-07-23T10:02:00+09:00</updated>
+    <id>http://gam0022.com/blog/2012/07/23/run-octpress-on-a-vps-using-rsync</id>
+    <content type="html"><![CDATA[<p>今回もOctpressに関する記事です。</p>
+
+<p>先日、Octpressを使ってGithubPages上にブログを運営しましたが、
+気が変わってレンタルしているVPS上で運営したくなりました。</p>
+
+<p>Octpressでは<code>rake deploy</code>を叩くだけでRsyncを使い自分のサーバ上にコンテンツを同期するようにできます。</p>
+
+<p>今回はその方法を紹介したいと思います。</p>
+
+<p>Rsyncを使って同期するためには次の2つの作業をする必要があります。</p>
+
+<p>(もしかすると、Rakefileの設定だけでよいのかもしれませんが、未検証です。)</p>
+
+<ol>
+<li>公開鍵認証を使ってsshでログインできるようにする。</li>
+<li>サーバ側の<code>~/.ssh/authorized_keys</code>にローカル側の公開鍵を登録する。</li>
+</ol>
+
+
+<p>1.は最初から行なっている人が多いかもしれませんね。</p>
+
+<p>ここでは、作成済みのuserというユーザからserverというドメインのサーバに公開鍵でログインするようにする手順を紹介します。</p>
+
+<p>環境はServersMan@VPS(OS:Ubuntu, HDD:10GB,RAM:256MB)です。</p>
+
+<h2>サーバ側の設定</h2>
+
+<p>まず、VPSに普通にパスワード認証でsshをして作業します。</p>
+
+<h3>公開鍵の生成</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ssh root@server
+</span><span class='line'>login user
+</span><span class='line'>ssh-keygen -t rsa <span class="c">#公開鍵を生成 save the keyは空白でOK、パスフレーズは任意のものを指定する</span>
+</span><span class='line'><span class="nb">cd</span> ~/.ssh/
+</span><span class='line'>mv id_rsa.pub authorized_keys <span class="c">#公開鍵はauthorized_keysにリネーム</span>
+</span><span class='line'>cat id_rsa <span class="c">#この内容は後でローカルに保存するので、テキストエディタなどに貼りつけておく</span>
+</span><span class='line'><span class="nb">exit</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>sshの設定</h3>
+
+<p>vimなどで、サーバ側の<code>/etc/ssh/sshd_config</code>を編集します。
+間違った設定をすると最悪sshでログインできなるので注意しましょうw</p>
+
+<p>私の場合はこのような感じに<strong>一部を書き換えました。</strong>
+この記事を書いている私ですが、サーバの設定は初心者なので、あまり信用しないようにしましょうw
+あくまで参考程度で。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>AllowUsers user
+</span><span class='line'>RSAAuthentication yes
+</span><span class='line'>PubkeyAuthentication yes
+</span><span class='line'>AuthorizedKeysFile   %h/.ssh/authorized_keys</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>VPS上の設定が終わったら、sshdを再起動します。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/init.d/ssh restart
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>ローカル側の設定</h2>
+
+<p>前に<code>cat id_rsa</code>で表示した内容を、ローカルの<code>~/.ssh/foo.key</code>(fooは任意)で保存します。
+sshの-iオプションで秘密鍵を指定してログインらしいです。じつはよくわかってませんw</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/.ssh
+</span><span class='line'>vim foo.key <span class="c">#サーバのid_rsaをコピペして保存</span>
+</span><span class='line'>chmod 600 foo.key <span class="c">#これしないと「WARNING: UNPROTECTED PRIVATE KEY FILE!」と出てログインできない</span>
+</span><span class='line'>ssh -i foo.key user@server <span class="c">#これでログインできれば成功</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>サーバ側の~/.ssh/authorized_keysにローカル側の公開鍵を登録する。</h3>
+
+<p>前の手順で、サーバにログインできたと思うので、
+ついでにサーバ側の<code>~/.ssh/authorized_keys</code>にローカルの公開鍵を追加します。</p>
+
+<h3>Octpressの設定</h3>
+
+<p>ここまで来れば、あとはOctpressの設定だけです。<code>Rakefile</code>を編集します。</p>
+
+<p>私の場合、GithubPages用にRakeFileを設定してしまったので、書き直します。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h2&gt;-- Rsync Deploy config --&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Be</span> <span class="n">sure</span> <span class="n">your</span> <span class="kp">public</span> <span class="n">key</span> <span class="n">is</span> <span class="n">listed</span> <span class="k">in</span> <span class="n">your</span> <span class="n">server</span><span class="err">&#39;</span><span class="n">s</span> <span class="o">~</span><span class="sr">/.ssh/</span><span class="n">authorized_keys</span> <span class="n">file</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;ssh_user       = &quot;user@server&quot;</span>
+</span><span class='line'><span class="sr">ssh_port       = &quot;1234&quot; #普通は22ですが、セキュリティ上の理由で(</span>
+</span><span class='line'><span class="sr">document_root  = &quot;/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="s2">&quot; #htmlの公開用のディレクトリを指定。ServersMan@VPSならこの設定でいいはず。</span>
+</span><span class='line'><span class="s2">rsync_delete   = true&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;h1&gt;deploy_default = &quot;</span><span class="n">push</span><span class="s2">&quot;&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;deploy_default = &quot;</span><span class="n">rsync</span><span class="s2">&quot; #rsyncで同期します。</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>たぶんこれで設定は終わりです。</p>
+
+<p><code>rake deploy</code>でファイルが同期できたら成功です。</p>
+
+<hr />
+
+<p>参考記事
+:<a href="http://octopress.org/docs/deploying/rsync/">Deploying With Rsync</a></p>
+]]></content>
+  </entry>
+  
+</feed>
