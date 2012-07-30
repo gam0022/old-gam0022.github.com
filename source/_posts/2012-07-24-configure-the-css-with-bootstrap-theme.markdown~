@@ -1,0 +1,88 @@
+---
+layout: post
+title: "Octpressでbootstrap-themeにしたとき、/sass/custom/\_styles.scssが反映されない件について"
+date: 2012-07-24 22:50
+comments: true
+categories: 
+- Octpress
+- CSS
+- SASS/SCSS
+- theme
+- bootstrap
+---
+
+## Octpressでbootstrap-themeにしたとき、/sass/custom/\_styles.scssが反映されない件について
+
+前回、[Octpressのテーマをカスタマイズする](http://gam0022.net/blog/2012/07/21/use-bootstrap-theme/)という記事で、
+Octpressに[bootstrap-theme](https://github.com/bkutil/bootstrap-theme)を導入したのですが、
+このテーマを導入してから、`/sass/custom/\_styles.scss`に書いたSCSS(CSS)が反映されなくなってしまいました。
+
+## OctpressのCSS生成の仕組み
+
+Octpressでは、`sass`以下のディレクトリにある`.scss`ファイルを読み取り、
+最終的なCSSを生成しているようです。(たぶん)
+
+SCSSとは、CSSメタ言語のことで、要するにCSSを生成するための言語です。
+
+で、`/sass/custom/\_styles.scss`が反映されない原因なんですが、
+よく見ると、単純に`sass/bootstrap/bootstrap.scss`で`/sass/custom/\_styles.scs`をimportしてありませんでした。
+
+というわけで、簡単に`sass/bootstrap/bootstrap.scss`の最終行に次のような感じでimport文を追加することで解決しました。
+
+{% codeblock lang:css %}
+// Custom
+@import "custom/colors";
+@import "custom/fonts";
+@import "custom/layout";
+@import "custom/styles";
+{% endcodeblock %}
+
+後は、`/sass/custom/\_styles.scs`に好きな設定を書けばOKです。ひとまず、こんな感じにしました。
+
+{% codeblock lang:css %}
+// This File is imported last, and will override other styles in the cascade
+// Add styles here to make changes without digging in too much
+
+div.entry-content {
+	h1, h2, h3, h4, h5, h6 {
+		line-height: 2;
+		margin-top: 30px;
+		margin-bottom: 20px;
+		padding-left: 10px;
+	}
+	h1 {
+		font-size: 20px;
+		background: #eee;  
+		border-left: 7px solid #e3297d;  
+		margin-top: 50px;
+	}
+	h2 {
+		font-size: 18px;
+		border-left:7px solid #ccc;  
+		border-bottom:1px solid #ccc;
+		margin-top: 40px;
+	}
+	h3 {
+		font-size: 15px;
+		border-left:7px solid #ccc;  
+	}
+	h4 {
+		font-size: 14px;
+		border-bottom:7px solid #ddd;
+	}
+	h5 {
+		font-size: 12px;
+		border-bottom:1px dashed #ddd;
+	}
+	h6 {
+		font-size: 11px;
+	}
+}
+{% endcodeblock %}
+
+# h1
+## h2
+### h3
+#### h4
+##### h5
+###### h6
